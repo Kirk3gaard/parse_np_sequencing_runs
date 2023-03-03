@@ -1,0 +1,6 @@
+# File types
+*.fastq
+*.fast5
+*.gz
+# folders
+test_data/
