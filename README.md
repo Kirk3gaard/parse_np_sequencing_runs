@@ -3,10 +3,10 @@
 desired data structure
 runID/
 - fastq/
- -runID_'<barcode>'_'<basecaller version>'_'<basecalling model>'.fastq.gz
+  - 'runID_barcode_basecaller version_basecalling model.fastq.gz'
 - fast5/
- - runID_'<barcode>'.tar.gz
+  - runID_barcode.tar.gz
 - pod5/
- - runID_'<barcode>'.tar.gz
+  - runID_barcode.tar.gz
 - reports/
-metadata.txt
+- metadata.txt
