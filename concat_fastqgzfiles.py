@@ -32,7 +32,7 @@ for arg in guppy_filename:
         guppy_filename_value = arg.split('=')[1]
         break            
 
-guppy_version = data['guppy_connected_version']        
+guppy_version = data['software_versions']['guppy_connected_version']        
         
 # Check if the variable is defined
 try:
