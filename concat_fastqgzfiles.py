@@ -31,6 +31,8 @@ for arg in guppy_filename:
     if arg.startswith('--guppy_filename='):
         guppy_filename_value = arg.split('=')[1]
         break            
+
+guppy_version = data['guppy_connected_version']        
         
 # Check if the variable is defined
 try:
@@ -49,7 +51,13 @@ try:
     print(guppy_filename_value)
 except NameError:
     print("The 'guppy_filename_value' field was not located.")
-    
+
+# Check if the variable is defined
+try:
+    print(guppy_version)
+except NameError:
+    print("The 'guppy_version' was not found.")
+
 # 
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
 #
