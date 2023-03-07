@@ -35,7 +35,7 @@ for arg in guppy_filename:
 guppy_version = data['software_versions']['guppy_connected_version']        
 
 # Access the version of guppy
-flow_cell_id = data['protocol_run_info']['flowcell']['flow_cell_id']        
+flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']        
         
 # Define the variables to check
 variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version, flow_cell_id]
