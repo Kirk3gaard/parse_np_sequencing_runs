@@ -67,9 +67,9 @@ if fastq_files:
     print("fastq.gz files found in the directory")
     output_file = os.path.join(fastq_output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
-        print("File exists")
+        print(f'The folder {output_file} does already exist.')
     else:
-        print("File does not exist")
+        print(f'The folder {output_file} does not exist.')
         command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
         print(command)
         subprocess.run(command, shell=True)
@@ -89,9 +89,9 @@ for barcode in barcodes:
     
     output_file = os.path.join(fastq_output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
-        print("File exists")
+        print(f'The folder {output_file} does already exist.')
     else:
-        print("File does not exist")
+        print(f'The folder {output_file} does not exist.')
         command = f'cat {barcode_dir}/*.fastq.gz > {output_file}'
         print(command)
         subprocess.run(command, shell=True)
