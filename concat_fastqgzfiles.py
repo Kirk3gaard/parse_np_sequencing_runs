@@ -65,9 +65,13 @@ fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
 if fastq_files:
     print("fastq.gz files found in the directory")
     output_file = os.path.join(output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
-    command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
-    print(command)
-    subprocess.run(command, shell=True)
+        if os.path.isfile(output_file):
+        print("File exists")
+    else:
+        print("File does not exist")
+        command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
+        print(command)
+        subprocess.run(command, shell=True)
         
 
 # Generate all the barcode combinations
