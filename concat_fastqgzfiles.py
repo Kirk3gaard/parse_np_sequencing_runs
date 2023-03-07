@@ -21,6 +21,17 @@ for root, dirs, files in os.walk(input_dir):
         fastq_pass_dir = os.path.join(root, "fastq_pass")
         break
 
+# Load the JSON data from a file
+with open(json_files[0], 'r') as f:
+    data = json.load(f)
+
+# Access the value of "guppy_filename" field
+guppy_filename = data['protocol_run_info']['args']
+for arg in guppy_filename:
+    if arg.startswith('--guppy_filename='):
+        guppy_filename_value = arg.split('=')[1]
+        break            
+        
 # Check if the variable is defined
 try:
     print(json_files)
@@ -33,6 +44,12 @@ try:
 except NameError:
     print("The 'fastq_pass' directory was not found in the specified directory.")
 
+# Check if the variable is defined
+try:
+    print(guppy_filename_value)
+except NameError:
+    print("The 'guppy_filename_value' field was not located.")
+    
 # 
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
 #
