@@ -35,7 +35,7 @@ except NameError:
 
 # 
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
-
+#
 for barcode in barcodes:
     barcode_dir = os.path.join(fastq_pass_dir, barcode)
     if not os.path.exists(barcode_dir):
