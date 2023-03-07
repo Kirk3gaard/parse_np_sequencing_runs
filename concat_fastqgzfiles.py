@@ -34,29 +34,16 @@ for arg in guppy_filename:
 # Access the version of guppy
 guppy_version = data['software_versions']['guppy_connected_version']        
         
-# Check if the variable is defined
-try:
-    print(json_files)
-except NameError:
-    print("The 'json_file' was not found in the specified directory.")
+# Define the variables to check
+variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version]
 
-# Check if the variable is defined
-try:
-    print(fastq_pass_dir)
-except NameError:
-    print("The 'fastq_pass' directory was not found in the specified directory.")
+# Loop over the variables and check if they are defined
+for variable in variables_to_check:
+    try:
+        print(variable)
+    except NameError:
+        print(f"The '{variable}' was not found.")
 
-# Check if the variable is defined
-try:
-    print(guppy_filename_value)
-except NameError:
-    print("The 'guppy_filename_value' field was not located.")
-
-# Check if the variable is defined
-try:
-    print(guppy_version)
-except NameError:
-    print("The 'guppy_version' was not found.")
 
 # Generate all the barcode combinations
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
