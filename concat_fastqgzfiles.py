@@ -54,10 +54,11 @@ for variable in variables_to_check:
 runid_val = f'{start_time_value}_np_{flow_cell_id}'
 
 # Prepare folder structure
-if os.path.exists(f'{output_dir}/fastq'):
-    print("The folder 'fastq' exists.")
+fastq_output_dir = f'{output_dir}/fastq'
+if os.path.exists(f'{fastq_output_dir}'):
+    print(f'The folder {fastq_output_dir} exists.')
 else:
-    print("The folder 'fastq' does not exist.")
+    print(f'The folder {fastq_output_dir} does not exist.')
     os.mkdir(f'{output_dir}/fastq')
 
 # Check if barcodes have been used 
