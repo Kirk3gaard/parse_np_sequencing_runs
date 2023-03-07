@@ -46,7 +46,7 @@ for variable in variables_to_check:
 
 
 # Generate all the barcode combinations
-barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
+barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified'] +['']  # Replace with your barcode sequences
 # Check if a barcode folder exists and concatenate the content of each barcode folder
 for barcode in barcodes:
     barcode_dir = os.path.join(fastq_pass_dir, barcode)
