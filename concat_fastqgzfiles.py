@@ -34,11 +34,14 @@ for arg in guppy_filename:
 # Access the version of guppy
 guppy_version = data['software_versions']['guppy_connected_version']        
 
-# Access the version of guppy
-flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']        
+# Access the  flowcell ID
+flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']    
+
+# Access the  flowcell ID
+start_time_value = data['protocol_run_info']['start_time'].split("T")[0]    
         
 # Define the variables to check
-variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version, flow_cell_id]
+variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version, flow_cell_id, start_time_value]
 
 # Loop over the variables and check if they are defined
 for variable in variables_to_check:
