@@ -65,7 +65,7 @@ else:
 fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
 if fastq_files:
     print("fastq.gz files found in the directory")
-    output_file = os.path.join(output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
+    output_file = os.path.join(fastq_output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
         print("File exists")
     else:
@@ -87,7 +87,7 @@ for barcode in barcodes:
     if not input_files:
         continue  # Skip if there are no reads for this barcode
     
-    output_file = os.path.join(output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
+    output_file = os.path.join(fastq_output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
         print("File exists")
     else:
