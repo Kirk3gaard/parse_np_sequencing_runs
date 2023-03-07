@@ -28,11 +28,11 @@ with open(json_files[0], 'r') as f:
 guppy_filename = data['protocol_run_info']['args']
 for arg in guppy_filename:
     if arg.startswith('--guppy_filename='):
-        guppy_filename_value = arg.split('=')[1]
+        guppy_filename_value = arg.split('=')[1].replace(".cfg", "")
         break            
 
 # Access the version of guppy
-guppy_version = data['software_versions']['guppy_connected_version'].replace(".cfg", "")        
+guppy_version = data['software_versions']['guppy_connected_version']        
 
 # Access the  flowcell ID
 flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']    
