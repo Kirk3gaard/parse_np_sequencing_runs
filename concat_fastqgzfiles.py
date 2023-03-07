@@ -1,12 +1,43 @@
 import subprocess
 import os
+import json
+import sys
+import glob
 
+input_dir = "test_data/2022-12-22_np_PAG65826/"
+output_dir = "out_put/"
+
+# json file
+json_files = []
+
+# Loop through all directories and files in the specified directory
+for root, dirs, files in os.walk(input_dir):
+    for file in files:
+            if file.endswith('.json'):
+                json_files.append(os.path.join(root, file))
+    # Check if the "fastq_pass" directory is in the list of directories
+    if "fastq_pass" in dirs:
+        # If it is, save the path to the "fastq_pass" directory to a variable
+        fastq_pass_dir = os.path.join(root, "fastq_pass")
+        break
+
+# Check if the variable is defined
+try:
+    print(json_files)
+except NameError:
+    print("The 'json_file' was not found in the specified directory.")
+
+# Check if the variable is defined
+try:
+    print(fastq_pass_dir)
+except NameError:
+    print("The 'fastq_pass' directory was not found in the specified directory.")
+
+# 
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
-input_dir = '/user_data/rhk/parse_np_sequencing_runs/test_data/2022-12-22_np_PAG65826/2022-12-22_np_PAG65826/20221222_1539_2G_PAG65826_a9e3e1e7/fastq_pass/'  # Replace with the directory containing all the fastq.gz files
-output_dir = '2022_np_out/'  # Replace with the directory where you want to save the concatenated files
 
 for barcode in barcodes:
-    barcode_dir = os.path.join(input_dir, barcode)
+    barcode_dir = os.path.join(fastq_pass_dir, barcode)
     if not os.path.exists(barcode_dir):
         continue  # Skip if there are no files for this barcode
     
