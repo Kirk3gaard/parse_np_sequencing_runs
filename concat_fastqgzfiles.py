@@ -32,7 +32,7 @@ for arg in guppy_filename:
         break            
 
 # Access the version of guppy
-guppy_version = data['software_versions']['guppy_connected_version']        
+guppy_version = data['software_versions']['guppy_connected_version'].split(".cfg")[0]        
 
 # Access the  flowcell ID
 flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']    
