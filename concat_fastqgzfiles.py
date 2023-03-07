@@ -70,7 +70,7 @@ for barcode in barcodes:
     if not input_files:
         continue  # Skip if there are no reads for this barcode
     
-    output_file = os.path.join(output_dir, f'{barcode}.{guppy_filename_value}.fastq.gz')
+    output_file = os.path.join(output_dir, f'{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     command = f'cat {barcode_dir}/*.fastq.gz > {output_file}'
     print(command)
     subprocess.run(command, shell=True)
