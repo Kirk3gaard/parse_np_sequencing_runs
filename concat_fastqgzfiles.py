@@ -50,11 +50,14 @@ for variable in variables_to_check:
     except NameError:
         print(f"The '{variable}' was not found.")
 
+# Create runid        
+runid_val = f'{start_time_value}_np_{flow_cell_id}'
+
 # Check if barcodes have been used 
 fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
 if fastq_files:
     print("fastq.gz files found in the directory")
-    output_file = os.path.join(output_dir, f'runid.g{guppy_version}.{guppy_filename_value}.fastq.gz')
+    output_file = os.path.join(output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
     print(command)
     subprocess.run(command, shell=True)
