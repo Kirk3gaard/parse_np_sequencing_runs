@@ -7,9 +7,8 @@ import glob
 input_dir = "test_data/2022-12-22_np_PAG65826/"
 output_dir = "out_put/"
 
-# json file
+# Locate json file and the fastq_pass directory
 json_files = []
-
 # Loop through all directories and files in the specified directory
 for root, dirs, files in os.walk(input_dir):
     for file in files:
@@ -21,7 +20,7 @@ for root, dirs, files in os.walk(input_dir):
         fastq_pass_dir = os.path.join(root, "fastq_pass")
         break
 
-# Load the JSON data from a file
+# Load the JSON data from the report file
 with open(json_files[0], 'r') as f:
     data = json.load(f)
 
@@ -32,6 +31,7 @@ for arg in guppy_filename:
         guppy_filename_value = arg.split('=')[1]
         break            
 
+# Access the version of guppy
 guppy_version = data['software_versions']['guppy_connected_version']        
         
 # Check if the variable is defined
@@ -58,9 +58,9 @@ try:
 except NameError:
     print("The 'guppy_version' was not found.")
 
-# 
+# Generate all the barcode combinations
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']  # Replace with your barcode sequences
-#
+# Check if a barcode folder exists and concatenate the content of each barcode folder
 for barcode in barcodes:
     barcode_dir = os.path.join(fastq_pass_dir, barcode)
     if not os.path.exists(barcode_dir):
