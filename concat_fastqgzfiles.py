@@ -44,9 +44,14 @@ for variable in variables_to_check:
     except NameError:
         print(f"The '{variable}' was not found.")
 
+# Check if barcodes have been used 
+fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
+if fastq_files:
+    print("fastq.gz files found in the directory")        
+        
 
 # Generate all the barcode combinations
-barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified'] +['']  # Replace with your barcode sequences
+barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']   # Replace with your barcode sequences
 # Check if a barcode folder exists and concatenate the content of each barcode folder
 for barcode in barcodes:
     barcode_dir = os.path.join(fastq_pass_dir, barcode)
