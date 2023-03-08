@@ -9,17 +9,17 @@ output_dir = "out_put/"
 # define the maximum size of each tar.gz file
 max_size = 500 * 1024 * 1024 * 1024  # 500 GB
 
-# Locate json file and the fastq_pass directory
+# Locate json file and the fast5_pass directory
 json_files = []
 # Loop through all directories and files in the specified directory
 for root, dirs, files in os.walk(input_dir):
     for file in files:
             if file.endswith('.json'):
                 json_files.append(os.path.join(root, file))
-    # Check if the "fastq_pass" directory is in the list of directories
-    if "fastq_pass" in dirs:
+    # Check if the "fast5_pass" directory is in the list of directories
+    if "fast5_pass" in dirs:
         # If it is, save the path to the "fastq_pass" directory to a variable
-        fastq_pass_dir = os.path.join(root, "fastq_pass")
+        fast5_pass_dir = os.path.join(root, "fast5_pass")
         break
 
 # Load the JSON data from the report file
@@ -43,7 +43,7 @@ flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']
 start_time_value = data['protocol_run_info']['start_time'].split("T")[0]    
         
 # Define the variables to check
-variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version, flow_cell_id, start_time_value]
+variables_to_check = [json_files, fast5_pass_dir, guppy_filename_value, guppy_version, flow_cell_id, start_time_value]
 
 # Loop over the variables and check if they are defined
 for variable in variables_to_check:
@@ -56,93 +56,71 @@ for variable in variables_to_check:
 runid_val = f'{start_time_value}_np_{flow_cell_id}'
 
 # Prepare folder structure
-fastq_output_dir = f'{output_dir}/fastq'
-if os.path.exists(f'{fastq_output_dir}'):
-    print(f'The folder {fastq_output_dir} exists.')
+fast5_output_dir = f'{output_dir}/fast5'
+if os.path.exists(f'{fast5_output_dir}'):
+    print(f'The folder {fast5_output_dir} exists.')
 else:
-    print(f'The folder {fastq_output_dir} does not exist.')
-    os.mkdir(f'{output_dir}/fastq')
+    print(f'The folder {fast5_output_dir} does not exist.')
+    os.mkdir(f'{fast5_output_dir}')
 
 
+######################
+# Define function
+######################
+import os
+import subprocess
+
+def tar_files(input_dir, output_dir, prefix):
+    # Get a list of all the files in the input directory
+    file_list = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if os.path.isfile(os.path.join(input_dir, f))]
+    
+    # Sort the file list by size
+    file_list.sort(key=lambda f: os.path.getsize(f))
+    
+    # Split the files into separate groups based on the maximum size limit
+    max_size = 500 * 1024 * 1024 * 1024 # 500 GB in bytes
+    split_files = []
+    current_size = 0
+    current_files = []
+    for f in file_list:
+        f_size = os.path.getsize(f)
+        if current_size + f_size > max_size:
+            split_files.append(current_files)
+            current_size = 0
+            current_files = []
+        current_files.append(f)
+        current_size += f_size
+    if current_files:
+        split_files.append(current_files)
+    
+    # Tar each group of files and save the resulting tar.gz file to the output directory
+    for i, files in enumerate(split_files):
+        output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.fast5.tar.gz')
+        with open(output_file, 'wb') as f_out:
+            for f in files:
+                with open(f, 'rb') as f_in:
+                    subprocess.run(['tar', 'czf', '-', '-C', os.path.dirname(f), os.path.basename(f)], stdout=f_out)
 
 
-# get a list of all the fast5 files
-file_list = [os.path.join(root, f) for root, dirs, files in os.walk('/path/to/fast5/directory') for f in files if f.endswith('.fast5')]
-
-# sort the files by size (largest first)
-file_list.sort(key=lambda f: os.path.getsize(f), reverse=True)
-
-# initialize variables
-tar_list = []
-tar_size = 0
-
-# iterate over the file list and add files to tar lists
-for f in file_list:
-    # check if the file size exceeds the maximum size
-    if os.path.getsize(f) > max_size:
-        print(f"Warning: file {f} exceeds maximum size and will not be included in a tar file.")
-        continue
-
-    # add the file to the current tar list
-    tar_list.append(f)
-    tar_size += os.path.getsize(f)
-
-    # check if the tar list exceeds the maximum size
-    if tar_size >= max_size:
-        # create a tar.gz file for the current tar list
-        subprocess.run(['tar', '-czvf', f'{tar_list[0]}_to_{tar_list[-1]}.tar.gz'] + tar_list)
-
-        # reset the tar list and size
-        tar_list = []
-        tar_size = 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#################################################
-
+######################
 
 # Check if barcodes have been used 
-fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
-if fastq_files:
-    print("fastq.gz files found in the directory")
-    output_file = os.path.join(fastq_output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
-    if os.path.isfile(output_file):
-        print(f'The file {output_file} does already exist.')
-    else:
-        print(f'The file {output_file} does not exist.')
-        command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
-        print(command)
-        subprocess.run(command, shell=True)
-        
+fast5_files = glob.glob(os.path.join(fast5_pass_dir, "*fast5"))
+if fast5_files:
+    print("fast5 files found in the directory")
+    tar_files(f'{fast5_pass_dir}', f'{fast5_output_dir}', f'{runid_val}.')
 
 # Generate all the barcode combinations
 barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']   # Replace with your barcode sequences
 # Check if a barcode folder exists and concatenate the content of each barcode folder
 for barcode in barcodes:
-    barcode_dir = os.path.join(fastq_pass_dir, barcode)
+    barcode_dir = os.path.join(fast5_pass_dir, barcode)
     if not os.path.exists(barcode_dir):
         continue  # Skip if there are no files for this barcode
     
     input_files = os.listdir(barcode_dir)
     if not input_files:
         continue  # Skip if there are no reads for this barcode
-    
-    output_file = os.path.join(fastq_output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
-    if os.path.isfile(output_file):
-        print(f'The file {output_file} does already exist.')
-    else:
-        print(f'The file {output_file} does not exist.')
-        command = f'cat {barcode_dir}/*.fastq.gz > {output_file}'
-        print(command)
-        subprocess.run(command, shell=True)
+    tar_files(f'{fast5_pass_dir}', f'{fast5_output_dir}', f'{runid_val}.{barcode}')
+
+        
