@@ -1,0 +1,148 @@
+import subprocess
+import os
+import json
+import sys
+import glob
+
+input_dir = "test_data/2022-12-22_np_PAG65826/"
+output_dir = "out_put/"
+# define the maximum size of each tar.gz file
+max_size = 500 * 1024 * 1024 * 1024  # 500 GB
+
+# Locate json file and the fastq_pass directory
+json_files = []
+# Loop through all directories and files in the specified directory
+for root, dirs, files in os.walk(input_dir):
+    for file in files:
+            if file.endswith('.json'):
+                json_files.append(os.path.join(root, file))
+    # Check if the "fastq_pass" directory is in the list of directories
+    if "fastq_pass" in dirs:
+        # If it is, save the path to the "fastq_pass" directory to a variable
+        fastq_pass_dir = os.path.join(root, "fastq_pass")
+        break
+
+# Load the JSON data from the report file
+with open(json_files[0], 'r') as f:
+    data = json.load(f)
+
+# Access the value of "guppy_filename" field
+guppy_filename = data['protocol_run_info']['args']
+for arg in guppy_filename:
+    if arg.startswith('--guppy_filename='):
+        guppy_filename_value = arg.split('=')[1].replace(".cfg", "")
+        break            
+
+# Access the version of guppy
+guppy_version = data['software_versions']['guppy_connected_version']        
+
+# Access the  flowcell ID
+flow_cell_id = data['protocol_run_info']['flow_cell']['flow_cell_id']    
+
+# Access the  flowcell ID
+start_time_value = data['protocol_run_info']['start_time'].split("T")[0]    
+        
+# Define the variables to check
+variables_to_check = [json_files, fastq_pass_dir, guppy_filename_value, guppy_version, flow_cell_id, start_time_value]
+
+# Loop over the variables and check if they are defined
+for variable in variables_to_check:
+    try:
+        print(variable)
+    except NameError:
+        print(f"The '{variable}' was not found.")
+
+# Create runid        
+runid_val = f'{start_time_value}_np_{flow_cell_id}'
+
+# Prepare folder structure
+fastq_output_dir = f'{output_dir}/fastq'
+if os.path.exists(f'{fastq_output_dir}'):
+    print(f'The folder {fastq_output_dir} exists.')
+else:
+    print(f'The folder {fastq_output_dir} does not exist.')
+    os.mkdir(f'{output_dir}/fastq')
+
+
+
+
+# get a list of all the fast5 files
+file_list = [os.path.join(root, f) for root, dirs, files in os.walk('/path/to/fast5/directory') for f in files if f.endswith('.fast5')]
+
+# sort the files by size (largest first)
+file_list.sort(key=lambda f: os.path.getsize(f), reverse=True)
+
+# initialize variables
+tar_list = []
+tar_size = 0
+
+# iterate over the file list and add files to tar lists
+for f in file_list:
+    # check if the file size exceeds the maximum size
+    if os.path.getsize(f) > max_size:
+        print(f"Warning: file {f} exceeds maximum size and will not be included in a tar file.")
+        continue
+
+    # add the file to the current tar list
+    tar_list.append(f)
+    tar_size += os.path.getsize(f)
+
+    # check if the tar list exceeds the maximum size
+    if tar_size >= max_size:
+        # create a tar.gz file for the current tar list
+        subprocess.run(['tar', '-czvf', f'{tar_list[0]}_to_{tar_list[-1]}.tar.gz'] + tar_list)
+
+        # reset the tar list and size
+        tar_list = []
+        tar_size = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################################################
+
+
+# Check if barcodes have been used 
+fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
+if fastq_files:
+    print("fastq.gz files found in the directory")
+    output_file = os.path.join(fastq_output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
+    if os.path.isfile(output_file):
+        print(f'The file {output_file} does already exist.')
+    else:
+        print(f'The file {output_file} does not exist.')
+        command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
+        print(command)
+        subprocess.run(command, shell=True)
+        
+
+# Generate all the barcode combinations
+barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']   # Replace with your barcode sequences
+# Check if a barcode folder exists and concatenate the content of each barcode folder
+for barcode in barcodes:
+    barcode_dir = os.path.join(fastq_pass_dir, barcode)
+    if not os.path.exists(barcode_dir):
+        continue  # Skip if there are no files for this barcode
+    
+    input_files = os.listdir(barcode_dir)
+    if not input_files:
+        continue  # Skip if there are no reads for this barcode
+    
+    output_file = os.path.join(fastq_output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
+    if os.path.isfile(output_file):
+        print(f'The file {output_file} does already exist.')
+    else:
+        print(f'The file {output_file} does not exist.')
+        command = f'cat {barcode_dir}/*.fastq.gz > {output_file}'
+        print(command)
+        subprocess.run(command, shell=True)
