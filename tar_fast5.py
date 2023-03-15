@@ -95,11 +95,11 @@ def tar_files(input_dir, output_dir, prefix):
     
     # Tar each group of files and save the resulting tar.gz file to the output directory
     for i, files in enumerate(split_files):
-        output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.fast5.tar.gz')
+        output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.tar.gz')
         with open(output_file, 'wb') as f_out:
-            for f in files:
-                with open(f, 'rb') as f_in:
-                    subprocess.run(['tar', 'czf', '-', '-C', os.path.dirname(f), os.path.basename(f)], stdout=f_out)
+            tar_cmd = ['tar', 'czf', '-', '-C', input_dir] + files
+            subprocess.run(tar_cmd, stdout=f_out)
+
 
 
 ######################
