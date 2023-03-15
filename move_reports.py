@@ -5,7 +5,7 @@ import sys
 import glob
 
 input_dir = "test_data/2022-12-22_np_PAG65826/"
-output_dir = "out_put/reports/"
+output_dir = "out_put/"
 
 # Locate json file and the fastq_pass directory
 json_files = []
@@ -27,15 +27,16 @@ def move_files(input_dir, output_dir, file_extension):
      subprocess.run(command, shell=True)
 
 # Prepare folder structure
-if os.path.exists(f'{output_dir}'):
-    print(f'The folder {output_dir} exists.')
+reports_output_dir = f'{output_dir}/reports'
+if os.path.exists(f'{reports_output_dir}'):
+    print(f'The folder {reports_output_dir} exists.')
 else:
-    print(f'The folder {output_dir} does not exist.')
-    os.mkdir(f'{output_dir}/')
+    print(f'The folder {reports_output_dir} does not exist.')
+    os.mkdir(f'{reports_output_dir}/')
 
 # Define the variables to check
 file_extensions = [ 'txt', 'md', 'csv', 'json', 'html', 'tsv']
 
 # Loop over the variables and check if they are defined
 for f_ext in file_extensions:
-     move_files(f'{run_dir}', f'{output_dir}', f'{f_ext}')
+     move_files(f'{run_dir}', f'{reports_output_dir}', f'{f_ext}')
