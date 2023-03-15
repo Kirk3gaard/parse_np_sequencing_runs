@@ -76,7 +76,7 @@ def tar_files(input_dir, output_dir, prefix):
     
     # Sort the file list by size
     file_list.sort(key=lambda f: os.path.getsize(f))
-    
+    print(file_list)
     # Split the files into separate groups based on the maximum size limit
     max_size = 500 * 1024 * 1024 * 1024 # 500 GB in bytes
     split_files = []
@@ -92,13 +92,13 @@ def tar_files(input_dir, output_dir, prefix):
         current_size += f_size
     if current_files:
         split_files.append(current_files)
-    
+    #print(split_files)
     # Tar each group of files and save the resulting tar.gz file to the output directory
     for i, files in enumerate(split_files):
         output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.tar.gz')
-        with open(output_file, 'wb') as f_out:
-            tar_cmd = ['tar', 'czf', '-', '-C', input_dir] + files
-            subprocess.run(tar_cmd, stdout=f_out)
+        command = f'tar -cvf {output_file} {" ".join(str(x) for x in files)}'
+        #print(command)
+        subprocess.run(command, shell=True)
 
 
 
@@ -117,10 +117,10 @@ for barcode in barcodes:
     barcode_dir = os.path.join(fast5_pass_dir, barcode)
     if not os.path.exists(barcode_dir):
         continue  # Skip if there are no files for this barcode
-    
     input_files = os.listdir(barcode_dir)
     if not input_files:
         continue  # Skip if there are no reads for this barcode
-    tar_files(f'{fast5_pass_dir}', f'{fast5_output_dir}', f'{runid_val}.{barcode}')
+    print(barcode)
+    tar_files(f'{barcode_dir}', f'{fast5_output_dir}', f'{runid_val}.{barcode}')
 
         
