@@ -4,3 +4,4 @@
 *.gz
 # folders
 test_data/
+out_put/
