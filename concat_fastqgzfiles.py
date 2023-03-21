@@ -4,7 +4,7 @@ import json
 import sys
 import glob
 
-input_dir = "test_data/2022-12-22_np_PAG65826/"
+input_dir = "test_data/2023-01-24_np_PAM69896/"
 output_dir = "out_put/"
 
 # Locate json file and the fastq_pass directory
@@ -58,7 +58,7 @@ fastq_output_dir = f'{output_dir}/fastq'
 if os.path.exists(f'{fastq_output_dir}'):
     print(f'The folder {fastq_output_dir} exists.')
 else:
-    print(f'The folder {fastq_output_dir} does not exist.')
+    print(f'The folder {fastq_output_dir} does not exist. Creating.')
     os.mkdir(f'{output_dir}/fastq')
 
 # Check if barcodes have been used 
@@ -67,11 +67,11 @@ if fastq_files:
     print("fastq.gz files found in the directory")
     output_file = os.path.join(fastq_output_dir, f'{runid_val}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
-        print(f'The file {output_file} does already exist.')
+        print(f'The file {output_file} does already exist. Skipping.')
     else:
-        print(f'The file {output_file} does not exist.')
+        #print(f'The file {output_file} does not exist. Creating.')
         command = f'cat {fastq_pass_dir}/*.fastq.gz > {output_file}'
-        print(command)
+        #print(command)
         subprocess.run(command, shell=True)
         
 
@@ -89,9 +89,9 @@ for barcode in barcodes:
     
     output_file = os.path.join(fastq_output_dir, f'{runid_val}.{barcode}.g{guppy_version}.{guppy_filename_value}.fastq.gz')
     if os.path.isfile(output_file):
-        print(f'The file {output_file} does already exist.')
+        print(f'The file {output_file} does already exist. Skipping.')
     else:
-        print(f'The file {output_file} does not exist.')
+        #print(f'The file {output_file} does not exist. Creating.')
         command = f'cat {barcode_dir}/*.fastq.gz > {output_file}'
-        print(command)
+        #print(command)
         subprocess.run(command, shell=True)

@@ -4,7 +4,7 @@ import json
 import sys
 import glob
 
-input_dir = "test_data/2022-12-22_np_PAG65826/"
+input_dir = "test_data/2023-01-24_np_PAM69896/"
 output_dir = "out_put/"
 
 # Locate json file and the fastq_pass directory
