@@ -1,7 +1,7 @@
 # parse_np_sequencing_runs
 
 
-Nanopore data when saved by minknow comes with a number of folders and files. However, for documentation, storage and upload it would be convenient to have a slightly different structure. For our purpose we have decided that the data should go in a folder with a unique `<runID>`. This `<runID>` consists of `<yyyymmdd>_np_<FLOWcellID>` to make it easy to spot the data 
+Nanopore data when saved by minknow comes with a number of folders and files. However, for documentation, storage and upload it would be convenient to have a slightly different structure. For our purpose we have decided that the data should go in a folder with a unique `<runID>`. This `<runID>` consists of `<yyyymmdd>_np_<FLOWcellID>` to make it easy to spot the data that was generated using nanopore technology.
 
 ## desired data structure:
 Keeping only the pass reads.
