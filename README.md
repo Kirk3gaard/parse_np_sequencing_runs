@@ -7,15 +7,18 @@ Nanopore data when saved by minknow comes with a number of folders and files. Ho
 
 `runID/`
 - `fastq/`
-  - `runID_barcode_basecaller version_basecalling model.fastq.gz`
+  - `<runID>_<barcode>_<basecaller_version>_<basecalling_model>.fastq.gz`
 - `fast5/`
-  - `runID_barcode.tar.gz`
+  - `<runID>_<barcode>.tar.gz`
 - `pod5/`
-  - `runID_barcode.tar.gz`
+  - `<runID>_<barcode>.tar.gz`
 - `reports/`
+  - all the reports (html, json, rmd. tsv, csv, etc.) 
 - `metadata.txt`
 
 ## Default structure from minknow
+`/<run_name>/<run_name>/<yyyymmdd>_<hhmm>_<position>_<FLOWcellID>_<somehexcode>/`
+
 - `fastq_pass/`
   - `barcode01/`
     - `barcode01....fastq`
@@ -24,19 +27,21 @@ Nanopore data when saved by minknow comes with a number of folders and files. Ho
     - `barcode01....fastq`
 - `fast5_pass/`
   - `barcode01/`
-    - `barcode01....fastq`
+    - `barcode01....fast5`
 - `fast5_fail/`
   - `barcode01/`
-    - `barcode01....fastq`
+    - `barcode01....fast5`
 - `other_reports/`
-- `report_<>.html`
-- `report_<>.json`
-- `report_<>.md`
-- `sample_sheet_<>.csv`
-- `throughput_PAG71663_12795670_c9425df7.csv`
-- `sequencing_summary_PAG71663_12795670_c9425df7.txt`
-- `final_summary_PAG71663_12795670_c9425df7.txt`
-- `barcode_alignment_PAG71663_12795670_c9425df7.tsv`
-- `pore_activity_PAG71663_12795670_c9425df7.csv`
+  - `pore_scan_data_<FLOWcellID>_<somenumber>_<somehexcode>.csv`  
+  - `temperature_adjust_data_<FLOWcellID>_<somenumber>_<somehexcode>.csv` 
+- `report_<FLOWcellID>_<yyyymmdd>_<hhmm>_<somenumber>.html`
+- `report_<FLOWcellID>_<yyyymmdd>_<hhmm>_<somenumber>.json`
+- `report_<FLOWcellID>_<yyyymmdd>_<hhmm>_<somenumber>.md`
+- `sample_sheet_<FLOWcellID>_<yyyymmdd>_<hhmm>_<somenumber>.csv`
+- `throughput_<FLOWcellID>_<somenumber>_<somehexcode>.csv`
+- `sequencing_summary_<FLOWcellID>_<somenumber>_<somehexcode>.txt`
+- `final_summary_<FLOWcellID>_<somenumber>_<somehexcode>.txt`
+- `barcode_alignment__<FLOWcellID>_<somenumber>_<somehexcode>.tsv`
+- `pore_activity_<FLOWcellID>_<somenumber>_<somehexcode>.csv`
 
 
