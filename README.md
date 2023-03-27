@@ -4,8 +4,9 @@
 Nanopore data when saved by minknow comes with a number of folders and files. However, for documentation, storage and upload it would be convenient to have a slightly different structure. 
 
 ## desired data structure:
+Keeping only the pass reads.
 
-`runID/`
+`<runID>/`
 - `fastq/`
   - `<runID>_<barcode>_<basecaller_version>_<basecalling_model>.fastq.gz`
 - `fast5/`
@@ -21,16 +22,16 @@ Nanopore data when saved by minknow comes with a number of folders and files. Ho
 
 - `fastq_pass/`
   - `barcode01/`
-    - `barcode01....fastq`
+    - `<FLOWcellID>_pass_barcode01_<somehexcode>_<somehexcode>_<file_number>.fastq.gz`
 - `fastq_fail/`
   - `barcode01/`
-    - `barcode01....fastq`
+    - `<FLOWcellID>_fail_barcode01_<somehexcode>_<somehexcode>_<file_number>.fastq.gz`
 - `fast5_pass/`
   - `barcode01/`
-    - `barcode01....fast5`
+    - `<FLOWcellID>_pass_barcode01_<somehexcode>_<somehexcode>_<file_number>.fast5`
 - `fast5_fail/`
   - `barcode01/`
-    - `barcode01....fast5`
+    - `<FLOWcellID>_fail_barcode01_<somehexcode>_<somehexcode>_<file_number>.fast5`
 - `other_reports/`
   - `pore_scan_data_<FLOWcellID>_<somenumber>_<somehexcode>.csv`  
   - `temperature_adjust_data_<FLOWcellID>_<somenumber>_<somehexcode>.csv` 
