@@ -3,7 +3,7 @@
 
 Nanopore data when saved by minknow comes with a number of folders and files. However, for documentation, storage and upload it would be convenient to have a slightly different structure. For our purpose we have decided that the data should go in a folder with a unique `<runID>`. This `<runID>` consists of `<yyyymmdd>_np_<FLOWcellID>` to make it easy to spot the data that was generated using nanopore technology.
 
-## desired data structure:
+## Desired data structure:
 Keeping only the pass reads.
 
 `<runID>/`
@@ -46,3 +46,8 @@ Keeping only the pass reads.
 - `pore_activity_<FLOWcellID>_<somenumber>_<somehexcode>.csv`
 
 
+## Solution
+
+- Get fastq files `python xx.py `
+- Get fast5 files processed `python xx.py `
+- Get reports collected `python xx.py `
