@@ -48,6 +48,6 @@ Keeping only the pass reads.
 
 ## Solution
 
-- Get fastq files `python xx.py `
-- Get fast5 files processed `python xx.py `
-- Get reports collected `python xx.py `
+- Get fastq files `python concat_fastqgzfiles.py {inputdir} {outputdir}`
+- Get fast5 files processed `python tar_fast5.py {inputdir} {outputdir}`
+- Get reports collected `python move_reports.py {inputdir} {outputdir}`
