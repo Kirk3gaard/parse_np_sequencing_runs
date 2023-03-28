@@ -106,7 +106,9 @@ def tar_files(input_dir, output_dir, prefix):
     # Tar each group of files and save the resulting tar.gz file to the output directory
     for i, files in enumerate(split_files):
         output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.tar.gz')
-        command = f'tar -cvf {output_file} {" ".join(str(x) for x in files)}'
+        with open(os.path.join(output_dir, f'{prefix}_{i}.txt'), 'w') as f:
+            f.write('\n'.join(files))
+        command = f'tar -czvf {output_file} --files-from {os.path.join(output_dir, f"{prefix}_{i}.txt")}'
         #print(command)
         subprocess.run(command, shell=True)
 
