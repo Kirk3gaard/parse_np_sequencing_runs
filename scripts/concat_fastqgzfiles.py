@@ -69,7 +69,7 @@ if os.path.exists(f'{fastq_output_dir}'):
     print(f'The folder {fastq_output_dir} exists.')
 else:
     print(f'The folder {fastq_output_dir} does not exist. Creating.')
-    os.mkdir(f'{output_dir}/fastq')
+    os.makedirs(f'{output_dir}/fastq')
 
 # Check if barcodes have been used 
 fastq_files = glob.glob(os.path.join(fastq_pass_dir, "*fastq.gz"))
