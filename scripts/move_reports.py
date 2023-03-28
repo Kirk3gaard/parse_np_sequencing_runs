@@ -3,9 +3,18 @@ import os
 import json
 import sys
 import glob
+import argparse
 
-input_dir = "test_data/2023-01-24_np_PAM69896/"
-output_dir = "out_put/"
+parser = argparse.ArgumentParser(description='Description of script1')
+parser.add_argument('input_dir', type=str, help='Input dir path')
+parser.add_argument('output_dir', type=str, help='Output dir path')
+args = parser.parse_args()
+
+input_dir = args.input_dir
+output_dir = args.output_dir
+
+#input_dir = "test_data/2023-01-24_np_PAM69896/"
+#output_dir = "out_put/"
 
 # Locate json file and the fastq_pass directory
 json_files = []
