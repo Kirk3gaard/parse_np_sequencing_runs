@@ -48,6 +48,7 @@ Keeping only the pass reads.
 
 ## Solution
 
-- Get fastq files `python concat_fastqgzfiles.py {inputdir} {outputdir}`
-- Get fast5 files processed `python tar_fast5.py {inputdir} {outputdir}`
-- Get reports collected `python move_reports.py {inputdir} {outputdir}`
+- Edit the input folder and run `bash parse_nanopore_run.sh` which then runs the python scripts
+  - Get fastq files `python concat_fastqgzfiles.py {inputdir} {outputdir}`
+  - Get fast5 files processed `python tar_fast5.py {inputdir} {outputdir}`
+  - Get reports collected `python move_reports.py {inputdir} {outputdir}`
