@@ -17,7 +17,7 @@ output_dir = args.output_dir
 #input_dir = "test_data/2023-01-24_np_PAM69896/"
 #output_dir = "out_put/"
 # define the maximum size of each tar.gz file
-max_size = 500 * 1024 * 1024 * 1024  # 500 GB
+max_size = 900 * 1024 * 1024 * 1024  # 900 GB
 
 # Locate json file and the fast5_pass directory
 json_files = []
