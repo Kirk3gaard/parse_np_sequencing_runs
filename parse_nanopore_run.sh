@@ -5,8 +5,8 @@ set -eu
 #input1=$1
 #input2=$2
 
-input1="/incoming/2022-12-13_np_PAM70460/"
-input2="/incoming/2022-12-13_np_PAM70460/"
+input1="/incoming/2022-12-13_np_PAG71352/"
+input2="$input1"
 
 
 python scripts/concat_fastqgzfiles.py $input1 $input2
