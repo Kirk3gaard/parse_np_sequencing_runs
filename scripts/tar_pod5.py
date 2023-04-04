@@ -5,12 +5,14 @@ import json
 import argparse
 import glob
 
+# Function to parse command line arguments
 def parse_args():
     parser = argparse.ArgumentParser(description='Description of script1')
     parser.add_argument('input_dir', type=str, help='Input dir path')
     parser.add_argument('output_dir', type=str, help='Output dir path')
     return parser.parse_args()
 
+# Function to locate the pod5_pass directory and JSON files
 def locate_pod5_pass_and_json_files(input_dir):
     json_files = []
 
@@ -25,6 +27,7 @@ def locate_pod5_pass_and_json_files(input_dir):
 
     return json_files, pod5_pass_dir
 
+# Function to load JSON data and extract required information
 def load_and_extract_data(json_files):
     with open(json_files[0], 'r') as f:
         data = json.load(f)
@@ -41,6 +44,7 @@ def load_and_extract_data(json_files):
 
     return guppy_filename_value, guppy_version, flow_cell_id, start_time_value
 
+# Function to check if the required variables are defined
 def check_variables(variables_to_check):
     for variable in variables_to_check:
         try:
@@ -48,9 +52,11 @@ def check_variables(variables_to_check):
         except NameError:
             print(f"The '{variable}' was not found.")
 
+# Function to create a run ID
 def create_runid(start_time_value, flow_cell_id):
     return f'{start_time_value}_np_{flow_cell_id}'
 
+# Function to prepare the output directory
 def prepare_output_dir(output_dir):
     pod5_output_dir = f'{output_dir}/pod5'
     if os.path.exists(f'{pod5_output_dir}'):
@@ -61,6 +67,7 @@ def prepare_output_dir(output_dir):
     
     return pod5_output_dir
 
+# Function to create tar files from input files while ensuring the maximum size constraint
 def tar_files(input_dir, output_dir, prefix):
     file_list = sorted([os.path.join(input_dir, f) for f in os.listdir(input_dir) if os.path.isfile(os.path.join(input_dir, f))],
                         key=lambda f: os.path.getsize(f))
@@ -69,6 +76,7 @@ def tar_files(input_dir, output_dir, prefix):
     current_size = 0
     current_files = []
 
+    # Group files based on the maximum size constraint
     for f in file_list:
         f_size = os.path.getsize(f)
         if current_size + f_size > max_size:
@@ -81,6 +89,6 @@ def tar_files(input_dir, output_dir, prefix):
     if current_files:
         split_files.append(current_files)
 
+    # Create tar files from grouped files
     for i, files in enumerate(split_files):
-        output_file = os.path.join(output_dir, f'{prefix}_{i}.tar.gz')
-        with open(os.path.join(output_dir, f'{prefix}_{i
+        output_file =
