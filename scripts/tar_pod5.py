@@ -89,6 +89,41 @@ def tar_files(input_dir, output_dir, prefix):
     if current_files:
         split_files.append(current_files)
 
-    # Create tar files from grouped files
+        # Create tar files from grouped files
     for i, files in enumerate(split_files):
-        output_file =
+        output_file = os.path.join(output_dir, prefix + '_' + str(i) + '.tar.gz')
+        with open(os.path.join(output_dir, f'{prefix}_{i}.txt'), 'w') as f:
+            f.write('\n'.join(files))
+        command = f'tar -czvf {output_file} --files-from {os.path.join(output_dir, f"{prefix}_{i}.txt")}'
+        subprocess.run(command, shell=True)
+
+# Main function
+def main():
+    args = parse_args()
+    input_dir = args.input_dir
+    output_dir = args.output_dir
+    json_files, pod5_pass_dir = locate_pod5_pass_and_json_files(input_dir)
+    guppy_filename_value, guppy_version, flow_cell_id, start_time_value = load_and_extract_data(json_files)
+    variables_to_check = [json_files, pod5_pass_dir, guppy_filename_value, guppy_version, flow_cell_id, start_time_value]
+    check_variables(variables_to_check)
+    runid_val = create_runid(start_time_value, flow_cell_id)
+    pod5_output_dir = prepare_output_dir(output_dir)
+
+    pod5_files = glob.glob(os.path.join(pod5_pass_dir, "*pod5"))
+    if pod5_files:
+        print("pod5 files found in the directory")
+        tar_files(pod5_pass_dir, pod5_output_dir, f'{runid_val}.')
+
+    barcodes = [f'barcode{i:02d}' for i in range(1, 97)] + ['unclassified']
+    for barcode in barcodes:
+        barcode_dir = os.path.join(pod5_pass_dir, barcode)
+        if not os.path.exists(barcode_dir):
+            continue
+        input_files = os.listdir(barcode_dir)
+        if not input_files:
+            continue
+        print(barcode)
+        tar_files(barcode_dir, pod5_output_dir, f'{runid_val}.{barcode}')
+
+if __name__ == "__main__":
+    main()
